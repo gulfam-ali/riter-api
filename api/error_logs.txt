@@ -1,0 +1,25 @@
+[17 Aug 2017 | 17:36:58]
+--------------------------------
+Error on line 263 in C:\xampp\htdocs\di\core\trunk\App\classes\customers\customers.php
+[NOTICE] Undefined index: parentBranch
+
+[17 Aug 2017 | 18:20:57]
+--------------------------------
+Error on line 132 in C:\xampp\htdocs\di\core\trunk\App\api.php
+[Warning] mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given
+
+[18 Aug 2017 | 10:11:45]
+--------------------------------
+Error on line 132 in C:\xampp\htdocs\di\core\trunk\App\api.php
+[Warning] mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given
+
+[18 Aug 2017 | 10:11:53]
+--------------------------------
+Error on line 132 in C:\xampp\htdocs\di\core\trunk\App\api.php
+[Warning] mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given
+
+[18 Aug 2017 | 10:14:20]
+--------------------------------
+Error on line 132 in C:\xampp\htdocs\di\core\trunk\App\api.php
+[Warning] mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given
+
