@@ -18,6 +18,7 @@ class API extends REST {
 	public $className = "";
 	public $task = "";
 	public $url_elements = "";
+	public $allow = true;
 
 	private $dbRead = NULL;
 	private $dbWrite = NULL;
@@ -40,6 +41,17 @@ class API extends REST {
 
 		$this->dbRead = $dbConnection->connectDbRead(); // For read data
 		$this->dbWrite = $dbConnection->connectDbWrite(); // For write data
+		
+		$this->check_permission($this->dbRead);
+	}
+	
+	//Blocking Request if User not logged in
+	public function check_permission($db){
+		require_once(CLASS_PATH . "/check_permit.php");
+		$permissionClass = new UserProceed;
+
+		$result = $permissionClass->validate_token($db);
+		$this->allow = $result;
 	}
 
 
@@ -67,6 +79,15 @@ class API extends REST {
 			}
 
 			if(file_exists(CONTROLLER_PATH . '/' . strtolower($this->className) .'Controller.php')){
+				
+					//Check if user logged in or not
+					if(!$this->allow)
+					{
+						$response['validate'] = 'false';
+						$response['message'] = 'Token mismatch';
+						return $this->response($this->json($response), 200);
+					}
+				
 					require_once(CONTROLLER_PATH . '/' . strtolower($this->className) .'Controller.php');
 					$className = $this->className . 'Controller';
 					$obj = new $className($this->dbRead);

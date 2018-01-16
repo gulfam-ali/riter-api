@@ -53,8 +53,7 @@ class Builder
           break;
 
         case 'DELETE':
-          $this->sql_query.= $this->query['fields']
-                          ." FROM ".$this->table_prefix.$this->query['table']
+          $this->sql_query.= " FROM ".$this->table_prefix.$this->query['table']
                           .$this->query['where'];
           break;
         default: break;

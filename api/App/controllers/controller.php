@@ -1,18 +1,15 @@
 <?php
 class controller extends REST {
+	
+	public $builderClass;
 
 	public function __construct(){
-
+		
 	}
 
-	public function validate_token(){
-		/* Validate token value in session */
-		$headers = getallheaders();
-
-		session_start();
-		// if(!isset($_SESSION['token']) || !isset($headers['token']) || $headers['token'] != $_SESSION['token']){
-		// 	return false;
-		// }
+	public function validate_token($db){
+		
+		
 	}
 
 }
