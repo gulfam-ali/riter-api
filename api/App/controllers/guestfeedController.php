@@ -1,11 +1,11 @@
 <?php
 require_once(CONTROLLER_PATH ."/controller.php");
-class feedController extends controller{
+class guestfeedController extends controller{
 
 	public $feedClass;
 	public function __construct($db) {
-		require_once((CLASS_PATH . '/feed/feed.php'));
-		$this->feedClass = new Feed($db);
+		require_once((CLASS_PATH . '/guestfeed/guestfeed.php'));
+		$this->feedClass = new Guestfeed($db);
 	}
 
 	public function call($db, $method){
@@ -23,23 +23,12 @@ class feedController extends controller{
 			  break;
 
 			case 'GET':
+			if(isset($requestUrl[0])){
+				return $this->feedClass->feed();
+			}
 			break;
 
 			case 'POST':
-			if(isset($requestUrl[1])){
-				if(trim($requestUrl[1]) == 'feed')
-				{
-					return $this->feedClass->feed();
-				}
-				else if(trim($requestUrl[1]) == 'mystories'){
-					return $this->feedClass->mystories();
-				}
-				else if(trim($requestUrl[1]) == 'bookmark'){
-					return $this->feedClass->bookmark();
-				}
-			}else{
-				return $this->feedClass->feed();
-			}
 			break;
 
 			default:

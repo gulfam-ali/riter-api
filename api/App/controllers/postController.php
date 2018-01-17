@@ -35,8 +35,17 @@ class postController extends controller{
 				else if(trim($requestUrl[1]) == 'read'){
 					return $this->postClass->read();
 				}
+				else if(trim($requestUrl[1]) == 'bookmark'){
+					return $this->postClass->bookmark();
+				}
 				else if(trim($requestUrl[1]) == 'write'){
 					return $this->postClass->write();
+				}
+				else if(trim($requestUrl[1]) == 'comment'){
+					return $this->postClass->comment();
+				}
+				else if(trim($requestUrl[1]) == 'loadcomments'){
+					return $this->postClass->loadcomments();
 				}
 			}else{
 				return $this->postClass->feed();
