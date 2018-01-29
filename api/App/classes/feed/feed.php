@@ -107,7 +107,7 @@ class Feed extends Builder
         {
 			$response['total_records'] = $records['rows'];
 			$response['validate'] = 'true';
-
+			$arr = array();
 			while($row = mysqli_fetch_assoc($result))
 			{
 				$arr[] = $row;

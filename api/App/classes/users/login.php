@@ -28,6 +28,10 @@ class Login extends Builder
 		else{
 			if(password_verify($password, $check_exist['data'][0]['password'])) {
 				$user_id = $check_exist['data'][0]['id'];
+				$first_name = $check_exist['data'][0]['first_name'];
+				$last_name = $check_exist['data'][0]['last_name'];
+				$avtar = $check_exist['data'][0]['avtar'];
+				
 				$user_token = $this->getToken(32);
 				
 				$insert_values = " user_id = '".$user_id."', token='".$user_token."' ";
@@ -35,6 +39,10 @@ class Login extends Builder
 				
 				if($flag){
 					$response['user_id'] = $user_id;
+					$response['first_name'] = $first_name;
+					$response['last_name'] = $last_name;
+					$response['avtar'] = $avtar;
+					
 					$response['user_token'] = $user_token;
 					$response['validate'] = 'true';
 					$response['message'] = 'Login Success';
