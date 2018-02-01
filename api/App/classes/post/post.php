@@ -4,12 +4,12 @@ class Post extends Builder
     public $config;
 
     public function __construct($db) {
-      $this->db = $db;
+		$this->db = $db;
 
-      global $config;
-      $this->config = (object) $config;
+		global $config;
+		$this->config = (object) $config;
 
-      $this->query_limit = " LIMIT ".$this->config->offset.",". $this->config->itemPerpage;
+		$this->query_limit = " LIMIT ".$this->config->offset.",". $this->config->itemPerpage;
   	}
 
     public function like()
@@ -52,7 +52,7 @@ class Post extends Builder
 		$user_id = (int)$this->valid_input($data->user_id);
 		$post_id = (int)$this->valid_input($data->post_id);
 		
-		$sql = "SELECT p.*, u.first_name, u.last_name," 
+		$sql = "SELECT p.*, u.avtar, u.first_name, u.last_name," 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id AND l.user_id = $user_id ) as liked," 
 			." (SELECT COUNT(1) FROM pr_bookmarks b WHERE b.post_id=p.id AND b.user_id = $user_id ) as bookmarked,"
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id) as likes," 
@@ -148,7 +148,7 @@ class Post extends Builder
 			$offset 	= $this->valid_input($data->offset);
 		}
 		
-		$sql = "SELECT c.*, u.first_name, u.last_name" 
+		$sql = "SELECT c.*, u.avtar, u.first_name, u.last_name" 
 			." FROM `pr_comments` c JOIN `pr_users` u ON c.user_id=u.id "
 			." WHERE c.is_deleted<>1 AND c.post_id=".$post_id
 			." ORDER BY c.comment_date DESC "

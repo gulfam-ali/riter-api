@@ -54,7 +54,7 @@ class Feed extends Builder
 		$data = json_decode(file_get_contents("php://input"));
 		$user_id = (int)$this->valid_input($data->user_id);
 		
-		$sql = "SELECT SQL_CALC_FOUND_ROWS p.*, u.first_name, u.last_name," 
+		$sql = "SELECT SQL_CALC_FOUND_ROWS p.*, u.avtar, u.first_name, u.last_name," 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id AND l.user_id = $user_id ) as liked," 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id) as likes," 
 			." (SELECT COUNT(1) FROM pr_comments c WHERE c.post_id=p.id) as comments, "
@@ -90,7 +90,7 @@ class Feed extends Builder
 		$data = json_decode(file_get_contents("php://input"));
 		$user_id = (int)$this->valid_input($data->user_id);
 		
-		$sql = "SELECT SQL_CALC_FOUND_ROWS p.*, u.first_name, u.last_name," 
+		$sql = "SELECT SQL_CALC_FOUND_ROWS p.*, u.avtar, u.first_name, u.last_name," 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id AND l.user_id = $user_id ) as liked," 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id) as likes," 
 			." (SELECT COUNT(1) FROM pr_comments c WHERE c.post_id=p.id) as comments, "

@@ -5,7 +5,7 @@ class UserProceed{
 	private $userId;
 	public $url_elements = array();
 	public $builderClass;
-	private $protectedController = array( "post", "user", "feed"); //These need permission
+	private $protectedController = array( "post", "user", "feed", "settings"); //These need permission
 	public $config;
 	
 	public function __construct( ) {
