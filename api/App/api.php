@@ -59,18 +59,12 @@ class API extends REST {
 	//This method dynmically call the method based on the query string
 	public function processApi(){
 		global $config;
-		if((isset($_GET['page'])) &&(isset($_GET['itemsPerPage'])) ){
-
-			if(($_GET['page']) > 1){
-				$offset = $_GET['itemsPerPage'] * ($_GET['page'] - 1) ;
-			}else{
-				$offset = 0 ;
-			}
-			$config->offset = $offset;
-			$config->itemPerpage = $_GET['itemsPerPage'];
+		if( isset($_GET['offset']) ){
+			$config->offset = (int)$_GET['offset'];
+			$config->items = 5;
 		}else{
 			$config->offset = 0;
-			$config->itemPerpage = 18446744;
+			$config->items = 5;
 		}
 
 		if(isset($_REQUEST['requestUrl'])){

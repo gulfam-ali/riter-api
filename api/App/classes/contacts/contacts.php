@@ -9,7 +9,7 @@ class Contacts extends Builder
       global $config;
       $this->config = (object) $config;
 
-      $this->query_limit = " LIMIT ".$this->config->offset.",". $this->config->itemPerpage;
+      $this->query_limit = " LIMIT ".$this->config->offset.",". $this->config->items;
   	}
 
     public function get_contact_list($cond = '')

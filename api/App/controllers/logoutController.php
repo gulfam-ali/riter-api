@@ -1,20 +1,19 @@
 <?php
 require_once(CONTROLLER_PATH ."/controller.php");
-class guestfeedController extends controller{
+class loginController extends controller{
 
-	public $feedClass;
+	public $logoutClass;
 	public function __construct($db) {
-		require_once((CLASS_PATH . '/guestfeed/guestfeed.php'));
-		$this->feedClass = new Guestfeed($db);
+		require_once((CLASS_PATH . '/users/logout.php'));
+		$this->logoutClass = new Login($db);
 	}
 
 	public function call($db, $method){
-		
 		$requestUrl = array();
 		if(isset($_REQUEST['requestUrl'])){
 			$requestUrl = explode('/', $_REQUEST['requestUrl']);
 		}
-		
+
 		switch($method) {
 			case 'PUT':
 			  break;
@@ -23,15 +22,17 @@ class guestfeedController extends controller{
 			  break;
 
 			case 'GET':
-			if(isset($requestUrl[0])){
-				return $this->feedClass->feed();
-			}
+			
 			break;
 
 			case 'POST':
 			if(isset($requestUrl[0])){
-				return $this->feedClass->feed();
+			  if(trim($requestUrl[0]) == 'logout')
+			  {
+				return $this->logoutClass->logout();
+			  }
 			}
+			
 			break;
 
 			default:

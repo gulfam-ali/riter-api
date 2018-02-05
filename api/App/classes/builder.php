@@ -116,7 +116,7 @@ class Builder
 
       global $config;
   		$config = (object) $config;
-      $this->query['limit'] = " LIMIT ".$config->offset.",". $config->itemPerpage;
+      $this->query['limit'] = " LIMIT ".$config->offset.",". $config->items;
       return $this->execute_query();
   }
 

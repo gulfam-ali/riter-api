@@ -2,7 +2,7 @@
 require_once(CONTROLLER_PATH ."/controller.php");
 class loginController extends controller{
 
-	public $contactClass;
+	public $loginClass;
 	public function __construct($db) {
 		require_once((CLASS_PATH . '/users/login.php'));
 		$this->loginClass = new Login($db);

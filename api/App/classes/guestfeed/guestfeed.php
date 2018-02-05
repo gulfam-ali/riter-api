@@ -9,13 +9,13 @@ class Guestfeed extends Builder
 		global $config;
 		$this->config = (object) $config;
 
-		$this->query_limit = " LIMIT ".$this->config->offset.",". $this->config->itemPerpage;
+		$this->query_limit = " LIMIT ".$this->config->offset.",". $this->config->items;
   	}
 
     public function feed($cond = '')
     {
 		
-		$sql = "SELECT SQL_CALC_FOUND_ROWS p.*, u.first_name, u.last_name," 
+		$sql = "SELECT SQL_CALC_FOUND_ROWS p.*, u.avtar, u.first_name, u.last_name," 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id) as likes," 
 			." (SELECT COUNT(1) FROM pr_comments c WHERE c.post_id=p.id) as comments, "
 			." (SELECT COUNT(1) FROM pr_views v WHERE v.post_id=p.id) as views "
@@ -27,11 +27,11 @@ class Guestfeed extends Builder
 		$tot_records = mysqli_query($this->db, "SELECT FOUND_ROWS() as rows");
         $records = mysqli_fetch_assoc($tot_records);
 
-        if($records>0)
+        if($result->num_rows >0)
         {
 			$response['total_records'] = $records['rows'];
 			$response['validate'] = 'true';
-
+			$arr = array();
 			while($row = mysqli_fetch_assoc($result))
 			{
 				$arr[] = $row;

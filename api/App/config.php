@@ -20,7 +20,9 @@ $config = array(
         "baseUrl" => "localhost/riter/api"
     ),
 	"salt" => "lkshs872njljdkfk9832u4vu3jslfjks",
-	"dbprefix" => "pr_"
+	"dbprefix" => "pr_",
+	"offset" => 0,
+	"items" => 5
 );
 
 /*
