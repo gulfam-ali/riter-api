@@ -51,16 +51,25 @@ class Mail
     return $mail;
 	}
 
-  function send_mail($recipient, $recipient_name, $is_html, $subject, $msg, $altBody)
+  function send_mail($recipient, $recipient_name, $subject, $msg)
   {
     $mail = $this->init_mailer($this->mail, $recipient, $recipient_name);
-
-    $header = '
+	$mail->Subject = $subject;
+	
+    $mail->Body = '
 	<!DOCTYPE html>
     <head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Wordsire</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">
+		<style>
+			p{
+				font-family: Verdana, Geneva, sans-serif;
+				font-family: 1.1em;
+				color: #666;
+			}
+		</style>
     </head>
     <body >
 		<div style="background: #fff; padding: 0em;">
@@ -68,46 +77,31 @@ class Mail
 			<tbody>
 				<tr>
 					<td>
-						<span style="color: #cc0000;font-weight: bold;border-radius: 0.15em;font-size: 1.6em;">
+						<span style="color: #ee0000;font-weight: bold; border-radius: 0.15em; font-size: 2em;">
 							wordsire
 						</span>
 					</td>
 				</tr>
 				<tr>
-					<td style="padding-bottom: 1em;">
-						<p>Dear Gulfam Ali</p>
-						<p>Thank you for becoming the part of wordsire. Your account is created.</p>
-						<p>Please activate your account by clicking this link below,</p>
-						
-						<p>Regards<br>
+					<td style="padding-bottom: 1em; font-size: 1.2em; color: #666;">'
+						.$msg
+						.'<p style="color: #999;">
+							Thank you for using Wordsire!<br>
 							The Wordsire Team
 						</p>
 						
 					</td>
 				</tr>
-				<tr>
-					<td>
-						<p>The Wordsire Team</p>
-					</td>
-				</tr>
 			</tbody>
 		</table>
 		</div>
-    </body>
-	
-	';
-	  
-	  
-	  
-    $msg = '<div style="padding:1.5em 0.5em 1em 0.5em; font-size:1.1em; font-family: Helvetica;"> '.$msg.' </div>';
-    $footer = '<div style="padding:0.2em; color: #666; background: #f0f0f0;"><p>Thanks<br>National Housing Bank Team</p></div> </div></div></body></html>';
+    </body>';
+    
+    $mail->AltBody = $msg;
 
-    $mail->Subject = $subject;
-    $mail->Body    = $header;
-    $mail->AltBody = $altBody;
-
-    $mail->isHTML($is_html);
+    $mail->isHTML(true);
 	
+	/*
 	try{
 		$mail->send();
 	}
@@ -116,20 +110,19 @@ class Mail
 	} catch (Exception $e) {
 		echo $e->getMessage(); //Boring error messages from anything else!
 	}
-	
+	*/
 	
     if(!$mail->send()) {
         $mailSent = 0;
         //echo 'Message could not be sent.';
-        echo 'Mailer Error: ' . $mail->ErrorInfo;
+        //echo 'Mailer Error: ' . $mail->ErrorInfo;
     } else {
         $mailSent = 1;
 
       //  echo 'Message has been sent';
     }
-	var_dump($mail);
-	die;
-    return $mailSent;
+	
+	return $mailSent;
   }
 
 }
