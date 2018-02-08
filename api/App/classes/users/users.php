@@ -34,6 +34,7 @@ class User extends Builder
 				$user_id = $check_exist['data'][0]['id'];
 				$first_name = $check_exist['data'][0]['first_name'];
 				$last_name = $check_exist['data'][0]['last_name'];
+				$email = $check_exist['data'][0]['email'];
 				$avtar = $check_exist['data'][0]['avtar'];
 				
 				$user_token = $this->getToken(32);
@@ -45,6 +46,7 @@ class User extends Builder
 					$response['user_id'] = $user_id;
 					$response['first_name'] = $first_name;
 					$response['last_name'] = $last_name;
+					$response['email'] = $email;
 					$response['avtar'] = $avtar;
 					
 					$response['user_token'] = $user_token;
@@ -198,7 +200,7 @@ class User extends Builder
 			
 			if($flag){
 				$response['validate'] = "true";
-				$response['message'] = "Password reset successfully. Login to your account now with your new password.";
+				$response['message'] = "Your password has been reset successfully! Login to your account now with your new password.";
 			}else{
 				$response['validate'] = "false";
 				$response['message'] = "Unable to connect to server. Please try again later.";

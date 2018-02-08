@@ -32,6 +32,10 @@ class settingsController extends controller{
 				{
 					return $this->settingsClass->change_email();
 				}
+				else if(trim($requestUrl[1]) == 'change-password')
+				{
+					return $this->settingsClass->change_password();
+				}
 			}
 			break;
 

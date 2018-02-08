@@ -78,7 +78,7 @@ class Mail
 				<tr>
 					<td>
 						<span style="color: #ee0000;font-weight: bold; border-radius: 0.15em; font-size: 2em;">
-							wordsire
+							<img src="https://wordsire.com/email_logo.png" alt="Wordsire" style="max-height: 40px;    margin-left: -0.5em; ">
 						</span>
 					</td>
 				</tr>
