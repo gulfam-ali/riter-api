@@ -1,7 +1,7 @@
 <?php
 $f=0;
 
-$path = $image_dir."/media/images/".$newfilename;
+$path = ROOT_URL."/media/images/dp/".$newfilename;
 
 if($ext == "jpg" || $ext == "jpeg")
 {
@@ -20,14 +20,14 @@ else if($ext == "gif")
 }
 else
 {
-	$res['validate'] = "invalid";
+	$res['validate'] = "false";
 	return $res;
 	die;
 }
 
 //$image = imagecreatefromjpeg($path); // Source
 
-$filename2 = $image_dir."/media/images/$newfilename"; // Destination
+$filename2 = ROOT_URL."/media/images/dp/$newfilename"; // Destination
 
 $thumb_width = 320;
 $thumb_height = 320;

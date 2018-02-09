@@ -2,7 +2,7 @@
 require_once(CONTROLLER_PATH ."/controller.php");
 class profileController extends controller{
 
-	public $postClass;
+	public $profileClass;
 	public function __construct($db) {
 		require_once((CLASS_PATH . '/profile/profile.php'));
 		$this->profileClass = new Profile($db);
@@ -28,9 +28,9 @@ class profileController extends controller{
 
 			case 'POST':
 			if(isset($requestUrl[1])){
-				if(trim($requestUrl[1]) == 'like')
+				if(trim($requestUrl[1]) == 'change-avtar')
 				{
-					return $this->postClass->like();
+					return $this->profileClass->change_avtar();
 				}
 			}else{
 				return $this->profileClass->view();

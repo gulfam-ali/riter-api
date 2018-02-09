@@ -35,8 +35,12 @@ $config = array(
     Creating constants for heavily used paths makes things a lot easier.
     ex. require_once(LIBRARY_PATH . "Paginator.php")
 */
+
+
 defined("SITE_URL")
-    or define("SITE_URL", 'localhost/riter/api');
+    or define("SITE_URL", 'https://localhost/riter/api');
+defined("ROOT_URL")
+	or define("ROOT_URL", dirname(__FILE__)."/../../", true);
 defined("LAYOUT_URL")
     or define("LAYOUT_URL", SITE_URL . '/resources/layouts');
 

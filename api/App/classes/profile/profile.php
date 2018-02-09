@@ -43,4 +43,44 @@ class Profile extends Builder
 
 		return $response;
 	}
+	
+	public function change_avtar(){
+		
+		$user_id  = (int)$this->valid_input($_POST['user_id']);
+		
+		$avtar_name = round(microtime(true) * 1000).$user_id;
+		
+		$allowed =  array('gif', 'png' ,'jpg', 'jpeg');
+		
+		$filename = $_FILES['avtar']['name'];
+		
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		if(in_array($ext,$allowed) ) {
+			
+			$newfilename = $avtar_name.'.'.$ext;
+			move_uploaded_file($_FILES['avtar']['tmp_name'], ROOT_URL."/media/images/dp/".$newfilename);
+			
+			require_once((CLASS_PATH . '/profile/thumbnail.php'));
+			
+			$flag = $this->update("users", " avtar = '".$newfilename."' ", " id=".$user_id );
+			
+			if($flag)
+			{
+				$response['validate'] = 'true';
+				$response['avtar'] = $newfilename;
+				$response['message'] = 'Profile picture have been changed successfully';
+			}else{
+				$response['validate'] = 'false';
+				$response['message'] = 'Profile picture cannot be changed. Please try again later.';
+			}
+			
+		}else{
+			$response['validate'] = 'empty';
+			$response['message'] = 'Only JPG/PNG images are allowed.';
+		}
+
+		
+		return $response;
+		
+	}
 }
