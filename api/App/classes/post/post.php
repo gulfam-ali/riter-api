@@ -57,7 +57,8 @@ class Post extends Builder
 			." (SELECT COUNT(1) FROM pr_bookmarks b WHERE b.post_id=p.id AND b.user_id = $user_id ) as bookmarked,"
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id) as likes," 
 			." (SELECT COUNT(1) FROM pr_comments c WHERE c.post_id=p.id) as comments, "
-			." (SELECT COUNT(1) FROM pr_views v WHERE v.post_id=p.id) as views "
+			." (SELECT COUNT(1) FROM pr_views v WHERE v.post_id=p.id) as views, "
+			." (SELECT COUNT(1) FROM pr_followers f WHERE f.user_id = p.user_id AND f.follower_id = $user_id ) as follow "
 			." FROM `pr_posts` p JOIN `pr_users` u ON p.user_id=u.id "
 			." WHERE p.is_deleted<>1 AND p.id=".$post_id;
 		

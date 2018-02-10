@@ -14,14 +14,16 @@ class Profile extends Builder
 
     public function view(){
 		$data = json_decode(file_get_contents("php://input"));
-		$user_id = (int)$this->valid_input($data->user_id);
+		$user_id = (int)$this->valid_input($data->member_id);
+		$my_id = (int)$this->valid_input($data->user_id);
 		
 		$sql = "SELECT u.id, u.avtar, u.first_name, u.last_name, u.reader_points, u.writer_points, u.registered_date, u.active, " 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.user_id = $user_id ) as likes," 
 			." (SELECT COUNT(1) FROM pr_bookmarks b WHERE b.user_id = $user_id ) as bookmarks,"
 			." (SELECT COUNT(1) FROM pr_comments c WHERE c.user_id = $user_id) as comments, "
 			." (SELECT COUNT(1) FROM pr_views v WHERE v.user_id = $user_id) as views, "
-			." (SELECT COUNT(1) FROM pr_posts p WHERE p.user_id = $user_id) as posts "
+			." (SELECT COUNT(1) FROM pr_posts p WHERE p.user_id = $user_id) as posts, "
+			." (SELECT COUNT(1) FROM pr_followers f WHERE f.user_id = $user_id AND f.follower_id = $my_id ) as follow "
 			." FROM `pr_users` u "
 			." WHERE u.id=$user_id AND u.active=1 ";
 		
@@ -43,6 +45,23 @@ class Profile extends Builder
 
 		return $response;
 	}
+	
+	public function follow()
+    {
+		$data = json_decode(file_get_contents("php://input"));
+		$user_id = (int)$this->valid_input($data->user_id);
+		$member_id = (int)$this->valid_input($data->member_id);
+		
+		$check = $this->select("followers", " user_id = ".$member_id." AND follower_id = ".$user_id." ");
+		
+		if($check['validate']==='empty'){
+			//Add Like Event
+			return $this->insert("followers", " user_id = ".$member_id.", follower_id = ".$user_id);
+		}else{
+			//Remove Like Event
+			return $this->delete("followers", " user_id = ".$member_id." AND follower_id = ".$user_id);
+		}
+    }
 	
 	public function change_avtar(){
 		

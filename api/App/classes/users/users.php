@@ -86,8 +86,8 @@ class User extends Builder
     {
 		$data = json_decode(file_get_contents("php://input"));
 		
-        $first_name = $this->valid_input($data->firstName);
-        $last_name = $this->valid_input($data->lastName);
+        $first_name = ucwords($this->valid_input($data->firstName));
+        $last_name = ucwords($this->valid_input($data->lastName));
         $email = $this->valid_input($data->email);
         $password = $data->password;
         $cpassword = $data->confirmPassword;

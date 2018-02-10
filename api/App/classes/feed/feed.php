@@ -96,8 +96,9 @@ class Feed extends Builder
 			." (SELECT COUNT(1) FROM pr_comments c WHERE c.post_id=p.id) as comments, "
 			." (SELECT COUNT(1) FROM pr_views v WHERE v.post_id=p.id) as views "
 			." FROM `pr_posts` p JOIN `pr_users` u ON p.user_id=u.id "
-			." WHERE p.id IN (SELECT post_id FROM pr_bookmarks WHERE user_id=$user_id ) AND p.is_deleted<>1 "
-			." ORDER BY p.post_date DESC".$this->query_limit;
+			." JOIN pr_bookmarks BM ON BM.post_id = p.id "
+			." WHERE BM.user_id=$user_id AND p.is_deleted<>1 "
+			." ORDER BY BM.bookmark_date DESC".$this->query_limit;
 		
 		$result = $this->custom($sql);
 		$tot_records = mysqli_query($this->db, "SELECT FOUND_ROWS() as rows");
