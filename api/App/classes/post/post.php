@@ -22,9 +22,16 @@ class Post extends Builder
 		
 		if($check['validate']==='empty'){
 			//Add Like Event
-			return $this->insert("likes", " post_id = ".$post_id.", user_id = ".$user_id);
+			$flag = $this->insert("likes", " post_id = ".$post_id.", user_id = ".$user_id);
+			if($flag){
+				return $this->insert("notifications", " user_id = '".$user_id."', event_id = '".EV_LIKE."', reference_type_id ='".REF_STORY."' , reference_id = '".$post_id."' " );
+			}else{
+				return false;
+			}
 		}else{
 			//Remove Like Event
+			$this->delete("notifications", " event_id = '".EV_LIKE."' AND reference_id = ".$post_id." AND user_id = ".$user_id);
+			
 			return $this->delete("likes", " post_id = ".$post_id." AND user_id = ".$user_id);
 		}
     }
@@ -39,10 +46,16 @@ class Post extends Builder
 		
 		if($check['validate']==='empty'){
 			//Add Like Event
-			return $this->insert("bookmarks", " user_id = ".$user_id.", post_id = ".$post_id);
+			$flag = $this->insert("bookmarks", " user_id = ".$user_id.", post_id = ".$post_id);
+			if($flag){
+				return $this->insert("notifications", " user_id = '".$user_id."', event_id = '".EV_BOOKMARK."', reference_type_id ='".REF_STORY."' , reference_id = '".$post_id."' " );
+			}else{
+				return false;
+			}
 		}else{
 			//Remove Like Event
-			return $this->delete("bookmarks", " post_id = ".$post_id." AND user_id = ".$user_id);
+			$this->delete("notifications", " event_id = '".EV_BOOKMARK."' AND reference_id = ".$post_id." AND user_id = ".$user_id);
+			return $this->delete("bookmarks", " post_id = ".$post_id." AND user_id = ".$user_id." ");
 		}
     }
 	
@@ -126,6 +139,8 @@ class Post extends Builder
         {
 			$response['comment_id'] = $this->last_insert_id;
 			$response['validate'] = 'true';
+			
+			$this->insert("notifications", " user_id = '".$user_id."', event_id = '".EV_COMMENT."', reference_type_id ='".REF_STORY."' , reference_id = '".$post_id."' " );
 		}
 		else{
 			$response['validate'] = 'false';
