@@ -36,6 +36,18 @@ class profileController extends controller{
 				{
 					return $this->profileClass->follow();
 				}
+				else if(trim($requestUrl[1]) == 'new-notifs')
+				{
+					return $this->profileClass->new_notifs();
+				}
+				else if(trim($requestUrl[1]) == 'notifications')
+				{
+					return $this->profileClass->notifications();
+				}
+				else if(trim($requestUrl[1]) == 'read-notifs')
+				{
+					return $this->profileClass->read_notifs();
+				}
 			}else{
 				return $this->profileClass->view();
 			}

@@ -112,6 +112,17 @@ class User extends Builder
 			
 			if($flag)
 			{
+				
+				$msg = "
+				<p><b>Hi ".$first_name.",</b></p>"
+				.'<p>First off, I’d like to extend a warm welcome. I recognize that your time is valuable and I’m seriously flattered that you join us.</p>'
+				."<p>Wordsire is a one who loves to play around with words and masters it thereby showing her creativity in her writings. A good writer starts with a good reading. I hope you enjoy this greatful journey with us!</p>"
+				."<p>In the meantime, I’d love to hear from you about what you’re interested in reading or writing about. So long as you reply to this email, I promise I will too.</p>"
+				."<p>If you need anything, please feel free to give me a shout at support@wordsire.com.</p>"
+				."<p>Again, welcome!</p>";
+		
+				$status = $this->mail->send_mail($email, $first_name, 'Password Reset Code', $msg);
+				
 				$response['validate'] = 'true';
 				$response['message'] = 'Registration Success';
 			}else{
