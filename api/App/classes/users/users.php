@@ -32,6 +32,7 @@ class User extends Builder
 		else{
 			if(password_verify($password, $check_exist['data'][0]['password'])) {
 				$user_id = $check_exist['data'][0]['id'];
+				$username = $check_exist['data'][0]['username'];
 				$first_name = $check_exist['data'][0]['first_name'];
 				$last_name = $check_exist['data'][0]['last_name'];
 				$email = $check_exist['data'][0]['email'];
@@ -44,6 +45,7 @@ class User extends Builder
 				
 				if($flag){
 					$response['user_id'] = $user_id;
+					$response['username'] = $username;
 					$response['first_name'] = $first_name;
 					$response['last_name'] = $last_name;
 					$response['email'] = $email;
