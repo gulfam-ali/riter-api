@@ -107,7 +107,7 @@ class Post extends Builder
 		$data = json_decode(file_get_contents("php://input"));
 		
 		$title = $this->valid_input($data->title);
-		$body = $this->valid_input($data->body);
+		$body = ucwords($this->valid_input($data->body));
 		$user_id = $this->valid_input($data->user_id);
 		
 		$insert_values = " user_id = '".$user_id."', title='".$title."', body='".$body."', post_date=NOW() ";
