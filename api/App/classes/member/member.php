@@ -19,10 +19,11 @@ class Member extends Builder
 		
 		$sql = "SELECT u.id, u.avtar, u.username, u.first_name, u.last_name, u.tagline, u.bio, u.reader_points, u.writer_points, u.registered_date, "
 			." (SELECT COUNT(1) FROM pr_posts p WHERE p.user_id = u.id) as posts, "
+			." (SELECT COUNT(1) FROM pr_posts PO JOIN pr_views PV ON PV.post_id=PO.id WHERE PO.user_id=u.id ) as views, "
 			." (SELECT COUNT(1) FROM pr_followers f WHERE f.user_id = u.id) as followers, "
 			." (SELECT COUNT(1) FROM pr_followers f WHERE f.user_id = u.id AND f.follower_id = $user_id ) as follow "
 			." FROM `pr_users` u "
-			." WHERE u.username='".$username."' AND u.active=1 ";
+			." WHERE (u.username='".$username."' OR u.id='".$username."' ) AND u.active=1 ";
 		
 		$result = $this->custom($sql);
 
@@ -48,15 +49,16 @@ class Member extends Builder
 		
 		$data = json_decode(file_get_contents("php://input"));
 		$user_id = (int)$this->valid_input($data->user_id);
+		$member_id = (int)$this->valid_input($data->member_id);
 		$username = $this->valid_input($data->username);
 		
-		$sql = "SELECT SQL_CALC_FOUND_ROWS p.*, u.avtar, u.first_name, u.last_name," 
+		$sql = "SELECT SQL_CALC_FOUND_ROWS p.*, u.avtar, u.username, u.first_name, u.last_name," 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id AND l.user_id = $user_id ) as liked," 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id) as likes," 
 			." (SELECT COUNT(1) FROM pr_comments c WHERE c.post_id=p.id) as comments, "
 			." (SELECT COUNT(1) FROM pr_views v WHERE v.post_id=p.id) as views "
 			." FROM `pr_posts` p JOIN `pr_users` u ON p.user_id=u.id "
-			." WHERE u.username='".$username."' AND p.is_deleted<>1 "
+			." WHERE ( u.username='".$username."' OR u.id='".$member_id."' ) AND p.is_deleted<>1 "
 			." ORDER BY p.post_date DESC".$this->query_limit;
 		
 		$result = $this->custom($sql);

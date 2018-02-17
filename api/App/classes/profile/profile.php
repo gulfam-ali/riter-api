@@ -17,7 +17,7 @@ class Profile extends Builder
 		$user_id = (int)$this->valid_input($data->member_id);
 		$my_id = (int)$this->valid_input($data->user_id);
 		
-		$sql = "SELECT u.id, u.avtar, u.first_name, u.last_name, u.reader_points, u.writer_points, u.registered_date, u.active, " 
+		$sql = "SELECT u.id, u.avtar, u.username, u.first_name, u.last_name, u.reader_points, u.writer_points, u.registered_date, u.active, " 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.user_id = $user_id ) as likes," 
 			." (SELECT COUNT(1) FROM pr_bookmarks b WHERE b.user_id = $user_id ) as bookmarks,"
 			." (SELECT COUNT(1) FROM pr_comments c WHERE c.user_id = $user_id) as comments, "
@@ -29,7 +29,7 @@ class Profile extends Builder
 		
 		$result = $this->custom($sql);
 
-        if($result->num_rows>0)
+        if($result && $result->num_rows>0)
         {
 			$response['validate'] = 'true';
 
@@ -114,7 +114,7 @@ class Profile extends Builder
 		$data = json_decode(file_get_contents("php://input"));
 		$user_id = (int)$this->valid_input($data->user_id);
 
-		$sql = "SELECT N.id, N.user_id, U.avtar, U.first_name, U.last_name, N.reference_id, NE.name as event, N.reference_name, N.notification_date, N.seen FROM pr_notifications N"
+		$sql = "SELECT N.id, N.user_id, U.avtar, U.username, U.first_name, U.last_name, N.reference_id, NE.name as event, N.reference_name, N.notification_date, N.seen FROM pr_notifications N"
 			." JOIN pr_notification_events NE ON N.event_id = NE.id"
 			." JOIN pr_users U ON N.user_id = U.id"
 			." WHERE N.user_id<> ".$user_id." AND N.receiver_id = ".$user_id." AND N.seen=0 AND N.notification_date > timestampadd(day, -7, now()) "
@@ -148,13 +148,13 @@ class Profile extends Builder
 		$data = json_decode(file_get_contents("php://input"));
 		$user_id = (int)$this->valid_input($data->user_id);
 
-		$sql = "SELECT COUNT(1) as personCount, N.id, N.user_id, U.avtar, U.first_name, U.last_name, N.reference_id, NE.name as event, N.reference_name, N.notification_date, N.seen FROM pr_notifications N"
+		$sql = "SELECT COUNT(1) as personCount, N.id, N.user_id, U.avtar, U.username, U.first_name, U.last_name, N.reference_id, NE.name as event, N.reference_name, N.notification_date, N.seen FROM pr_notifications N"
 			." JOIN pr_notification_events NE ON N.event_id = NE.id"
 			." JOIN pr_users U ON N.user_id = U.id"
 			." WHERE N.user_id<> ".$user_id." AND N.receiver_id = ".$user_id." AND N.notification_date > timestampadd(day, -7, now()) "
 			." GROUP BY NE.name, N.reference_id "
 			." UNION "
-			." SELECT COUNT(1) as personCount, N.id, N.user_id, U.avtar, U.first_name, U.last_name, N.reference_id, NE.name as event, PO.title as reference_name, N.notification_date, N.seen FROM pr_notifications N"
+			." SELECT COUNT(1) as personCount, N.id, N.user_id, U.avtar, U.username, U.first_name, U.last_name, N.reference_id, NE.name as event, PO.title as reference_name, N.notification_date, N.seen FROM pr_notifications N"
 			." JOIN pr_notification_events NE ON N.event_id = NE.id"
 			." JOIN pr_notification_reference_type NR ON N.reference_type_id = NR.id"
 			." JOIN pr_posts PO ON N.reference_id = PO.id"
@@ -165,7 +165,7 @@ class Profile extends Builder
 		
 		$result = $this->custom($sql);
 
-        if($result->num_rows>0)
+        if($result && $result->num_rows>0)
         {
 			$response['validate'] = 'true';
 			$new = 0;

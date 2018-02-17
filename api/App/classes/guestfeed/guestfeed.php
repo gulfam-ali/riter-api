@@ -15,7 +15,7 @@ class Guestfeed extends Builder
     public function feed($cond = '')
     {
 		
-		$sql = "SELECT SQL_CALC_FOUND_ROWS p.*, u.avtar, u.first_name, u.last_name," 
+		$sql = "SELECT SQL_CALC_FOUND_ROWS p.*, u.avtar, u.username, u.first_name, u.last_name," 
 			." (SELECT COUNT(1) FROM pr_likes l WHERE l.post_id=p.id) as likes," 
 			." (SELECT COUNT(1) FROM pr_comments c WHERE c.post_id=p.id) as comments, "
 			." (SELECT COUNT(1) FROM pr_views v WHERE v.post_id=p.id) as views "
