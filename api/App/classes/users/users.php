@@ -112,7 +112,7 @@ class User extends Builder
 			$postfix = mt_rand(1000, 9999);
 			$username = round(microtime(true) * 1000).$postfix;
 			
-			$insert_values = " username='".$username."' first_name = '".$first_name."', last_name='".$last_name."', email='".$email."', password='".$password."' ";
+			$insert_values = " username='".$username."', first_name = '".$first_name."', last_name='".$last_name."', email='".$email."', password='".$password."' ";
 			$flag = $this->insert("users", $insert_values);
 			
 			if($flag)

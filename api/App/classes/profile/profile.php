@@ -14,36 +14,23 @@ class Profile extends Builder
 
     public function view(){
 		$data = json_decode(file_get_contents("php://input"));
-		$user_id = (int)$this->valid_input($data->member_id);
-		$my_id = (int)$this->valid_input($data->user_id);
+		$user_id = (int)$this->valid_input($data->user_id);
 		
-		$sql = "SELECT u.id, u.avtar, u.username, u.first_name, u.last_name, u.reader_points, u.writer_points, u.registered_date, u.active, " 
-			." (SELECT COUNT(1) FROM pr_likes l WHERE l.user_id = $user_id ) as likes," 
-			." (SELECT COUNT(1) FROM pr_bookmarks b WHERE b.user_id = $user_id ) as bookmarks,"
-			." (SELECT COUNT(1) FROM pr_comments c WHERE c.user_id = $user_id) as comments, "
-			." (SELECT COUNT(1) FROM pr_views v WHERE v.user_id = $user_id) as views, "
-			." (SELECT COUNT(1) FROM pr_posts p WHERE p.user_id = $user_id) as posts, "
-			." (SELECT COUNT(1) FROM pr_followers f WHERE f.user_id = $user_id AND f.follower_id = $my_id ) as follow "
-			." FROM `pr_users` u "
-			." WHERE u.id=$user_id AND u.active=1 ";
+		return $this->select("users", " id='".$user_id."' ");
+	}
+	
+	public function save(){
+		$data = json_decode(file_get_contents("php://input"));
+		$user_id = $this->valid_input($data->user_id);
+		$first_name = $this->valid_input($data->first_name);
+		$last_name = $this->valid_input($data->last_name);
+		$gender = $this->valid_input($data->gender);
+		$tagline = $this->valid_input($data->tagline);
+		$bio = $this->valid_input($data->bio);
 		
-		$result = $this->custom($sql);
-
-        if($result && $result->num_rows>0)
-        {
-			$response['validate'] = 'true';
-
-			while($row = mysqli_fetch_assoc($result))
-			{
-				$arr[] = $row;
-			}
-			$response['data'] = $arr;
-			
-		}else{
-			$response['validate'] = 'empty';
-		}
-
-		return $response;
+		$set = " first_name = '".$first_name."', last_name = '".$last_name."', gender= '".$gender."', tagline= '".$tagline."', bio= '".$bio."' ";
+		
+		return $this->update("users", $set, " id='".$user_id."' ");
 	}
 	
 	public function follow()

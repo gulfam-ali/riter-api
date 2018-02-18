@@ -32,6 +32,10 @@ class profileController extends controller{
 				{
 					return $this->profileClass->change_avtar();
 				}
+				else if(trim($requestUrl[1]) == 'save')
+				{
+					return $this->profileClass->save();
+				}
 				else if(trim($requestUrl[1]) == 'follow')
 				{
 					return $this->profileClass->follow();
