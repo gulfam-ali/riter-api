@@ -126,7 +126,9 @@ class User extends Builder
 				."<p>If you need anything, please feel free to give me a shout at support@wordsire.com.</p>"
 				."<p>Again, welcome!</p>";
 		
-				$status = $this->mail->send_mail($email, $first_name, 'Welcome Aboard', $msg);
+				$this->mail->send_mail($email, $first_name, 'Welcome Aboard', $msg);
+				
+				$this->verification_code($email);
 				
 				$response['validate'] = 'true';
 				$response['message'] = 'Registration Success';
@@ -143,6 +145,98 @@ class User extends Builder
 			return $response;
 		}
     }
+	
+	public function check_verify(){
+		$data = json_decode(file_get_contents("php://input"));
+		$user_id = $this->valid_input($data->user_id);
+		$where = " id='".$user_id."' AND email_verified =1 ";
+		
+		return $this->select( "users", $where );
+	}
+	
+	public function verify_email(){
+		$data = json_decode(file_get_contents("php://input"));
+		$user_id = $this->valid_input($data->user_id);
+		$code = $this->valid_input($data->code);
+		
+		$where = " user_id='".$user_id."' AND item = 'email' AND code='".$code."' AND is_expired = 0 AND is_used = 0 ";
+		
+		$check_exist = $this->select( "verify", $where );
+		
+		if($check_exist['validate']=='true'){
+			$this->update("verify", " is_used = 1, is_expired=1 ", " user_id = '".$user_id."'");
+			$flag = $this->update("users", " email_verified =1 ", " id=".$user_id );
+			if($flag){
+				$response['validate'] = 'true';
+				$response['message'] = " Email address is successfully verified ";
+			}else{
+				$response['validate'] = 'false';
+				$response['message'] = " Something went wrong. Please try again later.";
+			}
+		}
+		else{
+			$response['validate'] = 'false';
+			$response['message'] = "Incorrect Verification Code";
+		}
+		
+		return $response;
+	}
+	
+	public function verification_code($email = ''){
+		if($email == ''){
+			$data = json_decode(file_get_contents("php://input"));
+			$user_id = $this->valid_input($data->user_id);
+			$where = " id='".$user_id."' ";
+		}else{
+			$where = " email='".$email."' ";
+		}
+		
+		
+		$check_exist = $this->select( "users", $where );
+		if($check_exist['validate']==='empty'){
+			
+			$response['validate'] = 'false';
+			$response['message'] = "User doesn't exist";
+		}
+		else{
+			$email = $check_exist['data'][0]['email'];
+			$first_name = $check_exist['data'][0]['first_name'];
+			$last_name = $check_exist['data'][0]['last_name'];
+			$full_name = $first_name.' '.$last_name;
+			$code = mt_rand(21212, 98989);
+			
+			$msg = "
+				<p><b>Hi ".$first_name.",</b></p>"
+				.'<p>Confirm your email address to complete your Wordsire account.</p>'
+				."<p>Enter the below code on verification screen, to confirm your account.</p>"
+				.'<p style="font-size: 2em; color: #888; font-weight: bold;">'.$code.'</p>'
+				."<p>If you need anything, please feel free to give me a shout at support@wordsire.com.</p>"
+				."<p>Again, welcome!</p>";
+	
+			$status = $this->mail->send_mail($email, $full_name, 'Verification Code', $msg);
+			
+			if($status){
+				$insert_values = " user_id = '".$user_id."', code='".$code."' ";
+				
+				$this->update("verify", " is_expired =1 ", " user_id = '".$user_id."'");
+				$flag = $this->insert("verify", $insert_values);
+				
+				if($flag){
+					$response['validate'] = 'true';
+					$response['message'] = " Verification code has been sent to your email address.";
+				}else{
+					$response['validate'] = 'false';
+					$response['message'] = " Something went wrong. Please try again later.";
+				}
+			}
+			else{
+				$response['validate'] = 'false';
+				$response['message'] = " Something went wrong. Please try again later.";
+			}
+		}
+		
+		return $response;
+	}
 	
 	public function reset_code()
     {

@@ -48,6 +48,18 @@ class userController extends controller{
 				{
 					return $this->userClass->reset_code();
 				}
+				else if(trim($requestUrl[1]) == 'check-verify')
+				{
+					return $this->userClass->check_verify();
+				}
+				else if(trim($requestUrl[1]) == 'send-verify-code')
+				{
+					return $this->userClass->verification_code();
+				}
+				else if(trim($requestUrl[1]) == 'verify-email')
+				{
+					return $this->userClass->verify_email();
+				}
 				else{
 					return 404;
 				}
